@@ -1,10 +1,12 @@
+import Button from "./Button";
+
 export default function ExpenseItem({ expense }) {
     const { title, image } = expense;
     return (
         <li>
-            {/* <h1>{image}</h1> */}
+            {/* <>{image}</> */}
             <h3>{title}</h3>
-            <button className="button">➕</button>
+            <Button>➕</Button>
         </li>
     );
 }

@@ -8,7 +8,6 @@ export default function ExpensesList({ expensesArr }) {
                 <ExpenseItem
                     key={expense.id + expense.title}
                     expense={expense}
-
                 />)}
         </ul>
     );

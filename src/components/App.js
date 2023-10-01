@@ -1,4 +1,6 @@
+import Button from "./Button";
 import ExpensesList from "./ExpensesList";
+import FormAddExpense from "./FormAddExpense";
 
 const expensesArr = [
   {
@@ -25,6 +27,11 @@ export default function App() {
 
         <ExpensesList expensesArr={expensesArr} />
 
+        <FormAddExpense />
+
+        <Button>
+          Add New Expense
+        </Button>
       </div>
     </div>
   );
