@@ -77,27 +77,41 @@ const expensesCategoriesArr = [
 ]
 
 export default function App() {
+  const [balancelist, setBalanceList] = useState(balanceCategoriesArr)
   const [expenseslist, setExpensesList] = useState(expensesCategoriesArr)
   const [amountSpend, setAmountSpend] = useState("")
   const [selectedExpenseId, setSelectedExpenseId] = useState(null)
+  const [selectedBalanceId, setSelectedBalanceId] = useState(null)
 
   function handleExpenseClicked(clickedId) {
     // add class "selected"
     setSelectedExpenseId(currentlySelectedId => currentlySelectedId === clickedId ? null : clickedId)
   }
 
+  function handleBalanceClicked(clickedId) {
+    // add class "selected"
+    setSelectedBalanceId(currentlySelectedId => currentlySelectedId === clickedId ? null : clickedId)
+  }
+
   function handleSumbitAmountSpend(e) {
     e.preventDefault()
     if (!selectedExpenseId) return alert("Choose category!")
-    //update expanse array
+    //update array
     setExpensesList(curExpensesList => curExpensesList.map(expenseItem => expenseItem.id === selectedExpenseId ? { ...expenseItem, amount: expenseItem.amount - amountSpend } : expenseItem))
+    setBalanceList(curBalanceList => curBalanceList.map(balanceItem => balanceItem.id === selectedBalanceId ? { ...balanceItem, amount: balanceItem.amount - amountSpend } : balanceItem))
     setAmountSpend("")
   }
 
   return (
     <div className="app">
 
-      {/* <PanelBalance list={balanceCategoriesArr} category="balance" /> */}
+      <PanelBalance
+        list={balancelist}
+        category="balance"
+        selectedBalanceId={selectedBalanceId}
+        balanceClicked={handleBalanceClicked}
+      />
+
       <PanelExpenses
         list={expenseslist}
         category="expenses"
@@ -124,30 +138,24 @@ export default function App() {
 }
 
 
-// function PanelBalance({ list, category }) {
-//   const [selectedItemId, setSelectedItemId] = useState(null)
-//   const sumOfAmounts = list.reduce((acc, cur) => acc + cur.amount, 0)
 
-//   function handleBtnClick(id) {
-//     setSelectedItemId(currentId => currentId === id ? null : id)
-//   }
-
-//   return (
-//     <div className={`panel panel__${category}`}>
-//       <h1 className="panel__title">Sum of {category}: {sumOfAmounts} zl.</h1>
-//       <div className="panel__content">
-//         {list.map(item =>
-//           <ItemBtn
-//             key={item.id}
-//             itemObj={item}
-//             onBtnClick={handleBtnClick}
-//             selectedItemId={selectedItemId}
-//           />)}
-//       </div>
-//     </div>
-//   )
-// }
-
+function PanelBalance({ list, category, selectedBalanceId, balanceClicked }) {
+  const sumOfAmounts = list.reduce((acc, cur) => acc + cur.amount, 0)
+  return (
+    <div className={`panel panel__${category}`}>
+      <h1 className="panel__title">Sum of {category}: {sumOfAmounts} zl.</h1>
+      <div className="panel__content">
+        {list.map(itemObj =>
+          <ItemBtn
+            key={itemObj.id}
+            itemObj={itemObj}
+            onBtnClick={balanceClicked}
+            selectedItemId={selectedBalanceId}
+          />)}
+      </div>
+    </div>
+  )
+}
 
 function PanelExpenses({ list, category, selectedExpenseId, expenseClicked }) {
   const sumOfAmounts = list.reduce((acc, cur) => acc + cur.amount, 0)
@@ -171,8 +179,6 @@ function PanelExpenses({ list, category, selectedExpenseId, expenseClicked }) {
 function ItemBtn({ itemObj, onBtnClick, selectedItemId }) {
   const { title, amount, id } = itemObj
   const isSelected = selectedItemId === id
-  // console.log('ItemBtn selectedItemId', selectedItemId)
-
   return (
     <button
       className={`button ${isSelected ? "selected" : ""}`}
