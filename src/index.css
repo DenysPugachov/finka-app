@@ -53,7 +53,7 @@
     flex-basis: 8rem;
 }
 
-.button+.selected{
+.button.selected{
     outline: none;
     background-color: #ff5733;
     box-shadow: 0 0 5px 2px #ff5733; 
