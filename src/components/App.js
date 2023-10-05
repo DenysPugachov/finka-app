@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const balanceCategoriesArr = [
   {
-    id: 10,
+    id: 1,
     title: "Den's Card",
     amount: 123.59
   },
@@ -29,50 +29,50 @@ const balanceCategoriesArr = [
   {
     id: 5,
     title: "Other",
-    amount: 0,
+    amount: 10,
   }
 ]
 
 const expensesCategoriesArr = [
   {
-    id: 11,
+    id: 1,
     title: "Food",
-    amount: 0,
+    amount: 5,
   },
   {
     id: 2,
     title: "Closes",
-    amount: 0,
+    amount: 410,
   },
   {
     id: 3,
     title: "Cosmetics",
-    amount: 0,
+    amount: 34,
   },
   {
     id: 4,
     title: "Home",
-    amount: 0,
+    amount: 115,
   },
   {
     id: 5,
     title: "Medicine",
-    amount: 0,
+    amount: 7,
   },
   {
     id: 6,
     title: "Transport",
-    amount: 0,
+    amount: 117,
   },
   {
     id: 7,
     title: "Adventures",
-    amount: 0,
+    amount: 110,
   },
   {
     id: 8,
     title: "Other",
-    amount: 0,
+    amount: 10,
   }
 ]
 
@@ -95,15 +95,15 @@ export default function App() {
 
 function Panel({ list, category }) {
   const [selectedItemId, setSelectedItemId] = useState(null)
+  const sumOfAmounts = list.reduce((acc, cur) => acc + cur.amount, 0)
 
   function handleBtnClick(id) {
-    setSelectedItemId(id)
-    console.log('id', id)
+    setSelectedItemId(currentId => currentId === id ? null : id)
   }
 
   return (
     <div className={`panel panel__${category}`}>
-      <h2 className="panel__title">{category}: _222.22zl.</h2>
+      <h1 className="panel__title">Sum of {category}: {sumOfAmounts} zl.</h1>
       <div className="panel__content">
         {list.map(item =>
           <PanelItem
