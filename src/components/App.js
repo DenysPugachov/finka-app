@@ -77,14 +77,49 @@ const expensesCategoriesArr = [
 ]
 
 export default function App() {
+  const [amountSpend, setAmountSpend] = useState("")
+  const [selectedExpenseObj, setSelectedExpenseObj] = useState(null)
+
+  function handleExpenseClicked(clickedObj) {
+    setSelectedExpenseObj(currentlySelectedObj => currentlySelectedObj?.id === clickedObj.id ? null : clickedObj)
+  }
+
+
+  function handleSumbitAmountSpend(e) {
+    e.preventDefault()
+    if (!selectedExpenseObj) return alert("Choose category!")
+
+    const newExpenseAmount = { ...selectedExpenseObj, amount: selectedExpenseObj.amount + amountSpend }
+
+    setSelectedExpenseObj(newExpenseAmount)
+
+
+    // setAmountSpend("")
+    console.log("Submit amount", amountSpend)
+  }
+
   return (
     <div className="app">
 
-      <Panel list={balanceCategoriesArr} category="balance" />
-      <Panel list={expensesCategoriesArr} category="expenses" />
+      {/* <PanelBalance list={balanceCategoriesArr} category="balance" /> */}
+      <PanelExpenses
+        list={expensesCategoriesArr}
+        category="expenses"
+        selectedExpenseObj={selectedExpenseObj}
+        expenseClicked={handleExpenseClicked}
+      />
 
-      <form className="input-container">
-        <input type="number" placeholder="Amount here..." />
+      <form
+        className="input-container"
+        onSubmit={handleSumbitAmountSpend}
+      >
+        <input
+          required
+          type="number"
+          placeholder="Amount here..."
+          value={amountSpend}
+          onChange={(e) => setAmountSpend(Number(e.target.value))}
+        />
         <button type="submit" className="button">✓</button>
       </form>
 
@@ -93,24 +128,43 @@ export default function App() {
 }
 
 
-function Panel({ list, category }) {
-  const [selectedItemId, setSelectedItemId] = useState(null)
+// function PanelBalance({ list, category }) {
+//   const [selectedItemId, setSelectedItemId] = useState(null)
+//   const sumOfAmounts = list.reduce((acc, cur) => acc + cur.amount, 0)
+
+//   function handleBtnClick(id) {
+//     setSelectedItemId(currentId => currentId === id ? null : id)
+//   }
+
+//   return (
+//     <div className={`panel panel__${category}`}>
+//       <h1 className="panel__title">Sum of {category}: {sumOfAmounts} zl.</h1>
+//       <div className="panel__content">
+//         {list.map(item =>
+//           <ItemBtn
+//             key={item.id}
+//             itemObj={item}
+//             onBtnClick={handleBtnClick}
+//             selectedItemId={selectedItemId}
+//           />)}
+//       </div>
+//     </div>
+//   )
+// }
+
+
+function PanelExpenses({ list, category, selectedExpenseObj, expenseClicked }) {
   const sumOfAmounts = list.reduce((acc, cur) => acc + cur.amount, 0)
-
-  function handleBtnClick(id) {
-    setSelectedItemId(currentId => currentId === id ? null : id)
-  }
-
   return (
     <div className={`panel panel__${category}`}>
       <h1 className="panel__title">Sum of {category}: {sumOfAmounts} zl.</h1>
       <div className="panel__content">
-        {list.map(item =>
-          <PanelItem
-            key={item.id}
-            item={item}
-            onBtnClick={handleBtnClick}
-            selectedItemId={selectedItemId}
+        {list.map(itemObj =>
+          <ItemBtn
+            key={itemObj.id}
+            itemObj={itemObj}
+            onBtnClick={expenseClicked}
+            selectedItemObj={selectedExpenseObj}
           />)}
       </div>
     </div>
@@ -118,14 +172,14 @@ function Panel({ list, category }) {
 }
 
 
-function PanelItem({ item, onBtnClick, selectedItemId }) {
-  const { title, amount, id } = item
-  const isSelected = id === selectedItemId
+function ItemBtn({ itemObj, onBtnClick, selectedItemObj }) {
+  const { title, amount, id } = itemObj
+  const isSelected = selectedItemObj?.id === id
 
   return (
     <button
       className={`button ${isSelected ? "selected" : ""}`}
-      onClick={() => onBtnClick(id)
+      onClick={() => onBtnClick(itemObj)
       }>
       <h5>{title}</h5>
       {amount} zl.
