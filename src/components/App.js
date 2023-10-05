@@ -95,11 +95,26 @@ export default function App() {
 
   function handleSumbitAmountSpend(e) {
     e.preventDefault()
+
     if (!selectedExpenseId) return alert("Choose category!")
-    //update array
-    setExpensesList(curExpensesList => curExpensesList.map(expenseItem => expenseItem.id === selectedExpenseId ? { ...expenseItem, amount: expenseItem.amount - amountSpend } : expenseItem))
-    setBalanceList(curBalanceList => curBalanceList.map(balanceItem => balanceItem.id === selectedBalanceId ? { ...balanceItem, amount: balanceItem.amount - amountSpend } : balanceItem))
+
+    //update data arrays
+    setBalanceList(curBalanceList => curBalanceList.map(balanceItem =>
+      balanceItem.id === selectedBalanceId
+        ? calcUpdatedAmount(balanceItem, amountSpend)
+        : balanceItem))
+
+    setExpensesList(curExpensesList => curExpensesList.map(expenseItem =>
+      expenseItem.id === selectedExpenseId
+        ? calcUpdatedAmount(expenseItem, amountSpend)
+        : expenseItem))
+
     setAmountSpend("")
+  }
+
+  function calcUpdatedAmount(obj, value) {
+    const updatedAmount = +(obj.amount - value).toFixed(2)
+    return { ...obj, amount: updatedAmount }
   }
 
   return (
@@ -128,11 +143,10 @@ export default function App() {
           type="number"
           placeholder="Amount here..."
           value={amountSpend}
-          onChange={(e) => setAmountSpend(Number(e.target.value))}
+          onChange={(e) => setAmountSpend(Math.abs(Number(e.target.value)))}
         />
         <button type="submit" className="button">✓</button>
       </form>
-
     </div>
   );
 }
