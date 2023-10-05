@@ -37,65 +37,61 @@ const expensesCategoriesArr = [
   {
     id: 1,
     title: "Food",
-    amount: 5,
+    amount: -5,
   },
   {
     id: 2,
     title: "Closes",
-    amount: 410,
+    amount: -410,
   },
   {
     id: 3,
     title: "Cosmetics",
-    amount: 34,
+    amount: -34,
   },
   {
     id: 4,
     title: "Home",
-    amount: 115,
+    amount: -115,
   },
   {
     id: 5,
     title: "Medicine",
-    amount: 7,
+    amount: -7,
   },
   {
     id: 6,
     title: "Transport",
-    amount: 117,
+    amount: -117,
   },
   {
     id: 7,
     title: "Adventures",
-    amount: 110,
+    amount: -110,
   },
   {
     id: 8,
     title: "Other",
-    amount: 10,
+    amount: -10,
   }
 ]
 
 export default function App() {
+  const [expenseslist, setExpensesList] = useState(expensesCategoriesArr)
   const [amountSpend, setAmountSpend] = useState("")
-  const [selectedExpenseObj, setSelectedExpenseObj] = useState(null)
+  const [selectedExpenseId, setSelectedExpenseId] = useState(null)
 
-  function handleExpenseClicked(clickedObj) {
-    setSelectedExpenseObj(currentlySelectedObj => currentlySelectedObj?.id === clickedObj.id ? null : clickedObj)
+  function handleExpenseClicked(clickedId) {
+    // add class "selected"
+    setSelectedExpenseId(currentlySelectedId => currentlySelectedId === clickedId ? null : clickedId)
   }
-
 
   function handleSumbitAmountSpend(e) {
     e.preventDefault()
-    if (!selectedExpenseObj) return alert("Choose category!")
-
-    const newExpenseAmount = { ...selectedExpenseObj, amount: selectedExpenseObj.amount + amountSpend }
-
-    setSelectedExpenseObj(newExpenseAmount)
-
-
-    // setAmountSpend("")
-    console.log("Submit amount", amountSpend)
+    if (!selectedExpenseId) return alert("Choose category!")
+    //update expanse array
+    setExpensesList(curExpensesList => curExpensesList.map(expenseItem => expenseItem.id === selectedExpenseId ? { ...expenseItem, amount: expenseItem.amount - amountSpend } : expenseItem))
+    setAmountSpend("")
   }
 
   return (
@@ -103,9 +99,9 @@ export default function App() {
 
       {/* <PanelBalance list={balanceCategoriesArr} category="balance" /> */}
       <PanelExpenses
-        list={expensesCategoriesArr}
+        list={expenseslist}
         category="expenses"
-        selectedExpenseObj={selectedExpenseObj}
+        selectedExpenseId={selectedExpenseId}
         expenseClicked={handleExpenseClicked}
       />
 
@@ -153,7 +149,7 @@ export default function App() {
 // }
 
 
-function PanelExpenses({ list, category, selectedExpenseObj, expenseClicked }) {
+function PanelExpenses({ list, category, selectedExpenseId, expenseClicked }) {
   const sumOfAmounts = list.reduce((acc, cur) => acc + cur.amount, 0)
   return (
     <div className={`panel panel__${category}`}>
@@ -164,7 +160,7 @@ function PanelExpenses({ list, category, selectedExpenseObj, expenseClicked }) {
             key={itemObj.id}
             itemObj={itemObj}
             onBtnClick={expenseClicked}
-            selectedItemObj={selectedExpenseObj}
+            selectedItemId={selectedExpenseId}
           />)}
       </div>
     </div>
@@ -172,14 +168,15 @@ function PanelExpenses({ list, category, selectedExpenseObj, expenseClicked }) {
 }
 
 
-function ItemBtn({ itemObj, onBtnClick, selectedItemObj }) {
+function ItemBtn({ itemObj, onBtnClick, selectedItemId }) {
   const { title, amount, id } = itemObj
-  const isSelected = selectedItemObj?.id === id
+  const isSelected = selectedItemId === id
+  // console.log('ItemBtn selectedItemId', selectedItemId)
 
   return (
     <button
       className={`button ${isSelected ? "selected" : ""}`}
-      onClick={() => onBtnClick(itemObj)
+      onClick={() => onBtnClick(id)
       }>
       <h5>{title}</h5>
       {amount} zl.
