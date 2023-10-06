@@ -4,7 +4,6 @@
 }
 
 .app{
-    margin:0;
     display: flex;
     flex-direction:column;
 }
@@ -14,7 +13,6 @@
     width:100%;
     flex-direction: column;
     border: 1px solid #ccc;
-    margin:1% 0;
 }
 
 .panel__balance{
@@ -27,7 +25,7 @@
 
 .panel__title{
     align-self:flex-start;
-    padding: 0.5em 1em;
+    padding: 0 1em;
     text-align: center;
     font-size: 36px;
     font-weight: bold;
@@ -48,8 +46,6 @@
     color:  #ff5733;
 }
 
-
-/* BUTTON */
 .button{
     padding: 20px;
     font-size: 24px;
@@ -72,9 +68,6 @@
     transform: scale(1.2); 
 }
 
-
-/* INPUT  */
-
 .input-container {
     display:flex;
 }
@@ -92,4 +85,13 @@
     font-size:40px;
     border-radius: 0 5px 5px 0;
     background-color: green;
+}
+
+.app__version{
+    position: absolute;
+    right: 5px;
+    font-size: 16px;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); 
+
 }

@@ -119,6 +119,7 @@ export default function App() {
 
   return (
     <div className="app">
+      <span className="app__version">v1.1</span>
 
       <PanelBalance
         list={balancelist}
