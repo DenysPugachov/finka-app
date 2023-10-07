@@ -1,6 +1,7 @@
 *{
     margin: 0;
     padding:0;
+    box-sizing: border-box;
 }
 
 .app{
@@ -25,7 +26,6 @@
 
 .panel__title{
     align-self:flex-start;
-    padding: 0 1em;
     text-align: center;
     font-size: 36px;
     font-weight: bold;
@@ -36,6 +36,7 @@
     display: flex;
     flex-wrap:wrap;
     justify-content:space-around;
+    padding: 3% 0;
 }
 
 .panel__title-positive{
