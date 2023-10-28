@@ -119,7 +119,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <span className="app__version">v1.1</span>
+      <span className="app__version">v1.11</span>
 
       <PanelBalance
         list={balancelist}
@@ -156,7 +156,7 @@ function PanelBalance({ list, category, selectedBalanceId, balanceClicked }) {
   const sumOfAmounts = list.reduce((acc, cur) => acc + cur.amount, 0)
   return (
     <div className={`panel panel__${category}`}>
-      <h1 className="panel__title panel__title-positive">Total {category}: {sumOfAmounts} zl. </h1>
+      <h1 className="panel__title panel__title-positive">Total {category}: {sumOfAmounts.toFixed(2)} zl. </h1>
       <div className="panel__content">
         {list.map(itemObj =>
           <ItemBtn
@@ -174,7 +174,7 @@ function PanelExpenses({ list, category, selectedExpenseId, expenseClicked }) {
   const sumOfAmounts = list.reduce((acc, cur) => acc + cur.amount, 0)
   return (
     <div className={`panel panel__${category}`}>
-      <h1 className="panel__title panel__title-negative">Total {category}: {sumOfAmounts} zl. </h1>
+      <h1 className="panel__title panel__title-negative">Total {category}: {sumOfAmounts.toFixed(2)} zl. </h1>
       <div className="panel__content">
         {list.map(itemObj =>
           <ItemBtn
